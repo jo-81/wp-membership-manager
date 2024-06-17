@@ -1,0 +1,15 @@
+{
+    "name": "colpart/wp-membership-manager",
+    "autoload": {
+        "psr-4": {
+            "Wp_Membership_Manager\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "jo-81",
+            "email": "geoffroy.colpart81@gmail.com"
+        }
+    ],
+    "require": {}
+}
