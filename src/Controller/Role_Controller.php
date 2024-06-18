@@ -4,6 +4,7 @@ namespace Wp_Membership_Manager\Controller;
 
 use Inc\Admin\Menu_Sub_Page;
 use Wp_Membership_Manager\Interface\Controller_Interface;
+use Wp_Membership_Manager\Model\WP_MM_Role_Model;
 
 final class Role_Controller implements Controller_Interface
 {
@@ -13,6 +14,7 @@ final class Role_Controller implements Controller_Interface
 
         if (is_admin()) {
             add_action("admin_post_wp_mm_add_role", [$this, 'wp_mm_add_role']);
+            add_action("admin_post_wp_mm_remove_role", [$this, 'wp_mm_remove_role']);
         }
     }
 
@@ -86,7 +88,52 @@ final class Role_Controller implements Controller_Interface
             die;
         }
 
-        \Inc\Message::add('wp_mm_error', 'The role has not been added', 'error');
+        \Inc\Message::add('wp_mm_message_role', 'The role has not been added', 'error');
+        wp_safe_redirect(add_query_arg(['page' => 'wp_membership_manager' ], admin_url("admin.php")));
+        die;
+    }
+
+    public function wp_mm_remove_role(): void
+    {
+        $datas = map_deep($_POST, 'sanitize_text_field');
+        $role_model = new WP_MM_Role_Model;
+
+        /** wp_nonce */
+        if (
+            ! isset($datas['wp_mm_nonce_remove_role']) 
+            || ! wp_verify_nonce($datas['wp_mm_nonce_remove_role'], 'wp_mm_action_remove_role')
+        ) 
+        {
+            \Inc\Message::add('wp_mm_message_role', 'Error with nonce', 'error');
+            wp_safe_redirect(add_query_arg(['page' => 'wp_membership_manager' ], admin_url("admin.php")));
+            die;
+        }
+
+        /** user not capability : manage_options */
+        if (! current_user_can('manage_options')) :
+            wp_safe_redirect(add_query_arg(['page' => 'wp_membership_manager' ], admin_url("admin.php")));
+            die;
+        endif;
+
+        if (! isset($datas['wp_mm_role'])) :
+            wp_safe_redirect(add_query_arg(['page' => 'wp_membership_manager' ], admin_url("admin.php")));
+            die;
+        endif;
+
+        if (! $role_model->exist($datas['wp_mm_role'])) {
+            \Inc\Message::add('wp_mm_message_role', 'Role not exist', 'error');
+            wp_safe_redirect(add_query_arg(['page' => 'wp_membership_manager' ], admin_url("admin.php")));
+            die;
+        }
+
+        $success = $role_model->remove($datas['wp_mm_role']);
+        if ($success) {
+            \Inc\Message::add('wp_mm_message_role', 'Role is remove', 'success');
+            wp_safe_redirect(add_query_arg(['page' => 'wp_membership_manager' ], admin_url("admin.php")));
+            die;
+        }
+
+        \Inc\Message::add('wp_mm_message_role', 'Role not exists', 'error');
         wp_safe_redirect(add_query_arg(['page' => 'wp_membership_manager' ], admin_url("admin.php")));
         die;
     }
