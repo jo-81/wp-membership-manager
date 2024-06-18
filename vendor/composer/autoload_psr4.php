@@ -6,5 +6,6 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Colpart\\WpMembershipManager\\' => array($baseDir . '/src'),
+    'Wp_Membership_Manager\\' => array($baseDir . '/src'),
+    'Inc\\' => array($baseDir . '/inc'),
 );

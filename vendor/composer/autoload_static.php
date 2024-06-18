@@ -7,16 +7,24 @@ namespace Composer\Autoload;
 class ComposerStaticInitca4a67dba26bf5e67a167bcf5609b18a
 {
     public static $prefixLengthsPsr4 = array (
-        'C' => 
+        'W' => 
         array (
-            'Colpart\\WpMembershipManager\\' => 28,
+            'Wp_Membership_Manager\\' => 22,
+        ),
+        'I' => 
+        array (
+            'Inc\\' => 4,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Colpart\\WpMembershipManager\\' => 
+        'Wp_Membership_Manager\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
+        ),
+        'Inc\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/inc',
         ),
     );
 
