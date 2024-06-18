@@ -2,7 +2,8 @@
     "name": "colpart/wp-membership-manager",
     "autoload": {
         "psr-4": {
-            "Wp_Membership_Manager\\": "src/"
+            "Wp_Membership_Manager\\": "src/",
+            "Inc\\": "inc/"
         }
     },
     "authors": [
