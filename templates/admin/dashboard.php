@@ -18,5 +18,18 @@
                 ['page' => 'wp_mm_roles']
                 , admin_url('admin.php'))); ?>"><?php esc_html_e("add", "wp-membership-manager"); ?></a>
         </p>
+
+        <div>
+            <?php foreach(array_reverse(wp_roles()->roles) as $role => $caps) : ?>
+
+                <?php if(! preg_match("#wp_mm_#", $role)) : continue; endif; ?>
+
+                <p><?php echo ucfirst($caps['name']); ?></p>
+                <p><a href="<?php echo esc_url(add_query_arg([
+                    'page' => 'wp_mm_roles',
+                    'role_name' => $role,
+                ], admin_url("admin.php"))) ?>">Consulter</a></p>
+            <?php endforeach; ?>
+        </div>
     </section>
 </section>
